@@ -15,9 +15,8 @@ export class DatabaseService {
     params: any = {},
     transaction: Transaction = null,
   ): Promise<T[]> {
-    const timestamp = new Date().getTime();
-    console.time(`${timestamp}`);
-    let query = await this.db.query(sql, { replacements: params, transaction });
+    console.time();
+    const query = await this.db.query(sql, { replacements: params, transaction });
     console.timeEnd();
     return query[0] as T[];
   }
@@ -27,12 +26,12 @@ export class DatabaseService {
     params = {},
     transaction = null,
   ): Promise<T> {
-    let query = await this.query(sql, params, transaction);
+    const query = await this.query(sql, params, transaction);
     return query.length > 0 ? query[0] : null;
   }
 
   async execute(sql: string, bind = [], transaction = null): Promise<any> {
-    let query = await this.db.query(sql, { bind: bind, transaction });
+    const query = await this.db.query(sql, { bind: bind, transaction });
     return query.length > 0 ? query[0] : null;
   }
 
